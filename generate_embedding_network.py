@@ -124,12 +124,11 @@ def run_prosnet():
         os.makedirs(out_folder)
 
     command = ('./embed -node %s/%s -link %s/%s -meta_path %s/meta.txt -output '
-        '%s/prosnet_vectors_%s_%s_%s -binary 0 -size %s '
-        '-negative 5 -samples 1 -iters 11 -threads 24 -model 2 -depth 10 '
-        '-restart 0.8 -edge_type_num %d -train_mode 2' % (input_folder, node_fname,
-            input_folder, edge_fname, input_folder, out_folder, time(), args.num_dim,
-            # args.num_dim, num_edge_types + 1))
-            args.emr, args.num_dim, num_edge_types))
+        '%s/prosnet_vectors_%s_%s_%s -binary 0 -size %s -negative 5 -samples 1 '
+        '-iters 11 -threads 24 -model 2 -depth 10 -restart 0.8 -edge_type_num %d'
+        ' -train_mode 2' % (input_folder, node_fname, input_folder, edge_fname,
+            input_folder, out_folder, time(), args.num_dim, args.emr,
+            args.num_dim, num_edge_types))
     print command
     subprocess.call(command, shell=True)
 
@@ -159,6 +158,9 @@ def main():
     edge_out = open('%s/%s' % (input_folder, edge_fname), 'w')
     write_edges(edge_out, herb_combo_edge_set, ('h', 'h'))
     write_edges(edge_out, symptom_herb_set, ('s', 'h'))
+    if args.emr:
+        # TODO: Add in EMR data.
+        pass
     edge_out.close()
 
     write_nodes()
